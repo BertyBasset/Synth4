@@ -1,0 +1,12 @@
+D:\My Documents\Development\C#\Synth3\SynthEngine\bin\Release\net6.0-windows\SynthEngine.deps.json
+D:\My Documents\Development\C#\Synth3\SynthEngine\bin\Release\net6.0-windows\SynthEngine.dll
+D:\My Documents\Development\C#\Synth3\SynthEngine\bin\Release\net6.0-windows\SynthEngine.pdb
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.csproj.AssemblyReference.cache
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.GeneratedMSBuildEditorConfig.editorconfig
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.AssemblyInfoInputs.cache
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.AssemblyInfo.cs
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.csproj.CoreCompileInputs.cache
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.dll
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\refint\SynthEngine.dll
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\SynthEngine.pdb
+D:\My Documents\Development\C#\Synth3\SynthEngine\obj\Release\net6.0-windows\ref\SynthEngine.dll
