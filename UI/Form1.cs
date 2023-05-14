@@ -17,7 +17,7 @@
 using Synth.IO;
 using Synth;
 using Synth.Modules.Modifiers;
-using Synth.Modules.Modifiers.Filters;
+using Synth.Keyboard;
 using Synth.Modules.Modulators;
 using Synth.Modules.Sources;
 using UI.Code;
@@ -26,6 +26,7 @@ using static Synth.Enums;
 using Synth.Modules.Effects;
 
 using System.Diagnostics;
+using Synth.Keyboard.Controllers;
 
 namespace UI;
 public partial class frmMidiController : Form {
@@ -33,9 +34,13 @@ public partial class frmMidiController : Form {
 
     #region Synth Modules
     Synth.SynthEngine engine = new Synth.SynthEngine();
+
+
+    Voice voice = new Voice();
+
     ModWheel mw = new();
     MidiControllers mc = new();         // Provides event handler when a Midi Controller changes value
-    Keyboard kbd = new();
+    MonoKeyboard kbd = new();
     VCO vco1 = new();
     VCO vco2 = new();
     VCO vco3 = new();
@@ -107,7 +112,7 @@ public partial class frmMidiController : Form {
         cboMidiChannel.SelectedIndex = 0;
         cboMidiChannel.SelectedIndexChanged += (o, e) => {
             int? midiChannel = cboMidiChannel.SelectedIndex <= 0 ? null : cboMidiChannel.SelectedIndex;
-            kbd.MidiChannel = midiChannel;
+           // kbd.MidiChannel = midiChannel;
             mw.MidiChannel = midiChannel;
             mc.MidiChannel = midiChannel;
         };

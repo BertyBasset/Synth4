@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SynthEngine\SynthEngine.csproj" />
+    <ProjectReference Include="..\Synth.Keyboard\Synth.Keyboard.csproj" />
+    <ProjectReference Include="..\SynthEngine\Synth.Modules.csproj" />
   </ItemGroup>
 
   <ItemGroup>
