@@ -39,7 +39,7 @@ public class PolyKeyboard {
 
         key? key;
 
-        key = keys.Find(x => x.MonoKeyboard.Note.ID == e.Note.ID);                      // 1. Find if any keys is already set to this note
+        key = keys.Find(x => x.MonoKeyboard.Note.ID == e.Note.ID);                  // 1. Find if any keys is already set to this note
 
         if (key == null & e.State == NoteState.On)                                  // 2. If note on, we need to find oldest key that's off, then oldest key that's on
             key = keys

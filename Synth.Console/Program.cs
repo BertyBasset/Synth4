@@ -1,7 +1,6 @@
 ﻿using Synth;
 
 // To fo
-// 1 Write Up
 // 2 Setup Forms App
 // 3 Hook up to Knobs 
 

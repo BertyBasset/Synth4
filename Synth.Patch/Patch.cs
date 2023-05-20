@@ -21,7 +21,7 @@ public class Patch {
     List<VCO> vco = Enumerable.Range(0, NUM_VOICES).Select(i => new VCO() { WaveFormType = VCOWaveformType.Saw }).ToList();
     List<VCF> vcf = Enumerable.Range(0, NUM_VOICES).Select(i => new VCF() { Cutoff = .1, Resonance = 1, FilterType = Enums.FilterType.Butterworth, ModAmount = 1 }).ToList();
     List<VCA> vca = Enumerable.Range(0, NUM_VOICES).Select(i => new VCA()).ToList();
-    List<EnvGen> env = Enumerable.Range(0, NUM_VOICES).Select(i => new EnvGen() { Attack = .4, Decay = .2, Sustain = .8, Release = 2 }).ToList();
+    List<EnvGen> env = Enumerable.Range(0, NUM_VOICES).Select(i => new EnvGen() { Attack = .05, Decay = .2, Sustain = .8, Release = .4 }).ToList();
     List<AudioOut> voiceOut = Enumerable.Range(0, NUM_VOICES).Select(i => new AudioOut()).ToList();
 
     // Synth Level Modules
