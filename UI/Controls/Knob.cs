@@ -237,9 +237,9 @@ namespace UI.Controls {
             }
         }
 
-        private int _intValue = 0;
+        
         public int IntValue {
-            get { return _intValue; }
+            get { return (int)Value; }
         }
 
         private int Percent {
@@ -320,18 +320,18 @@ namespace UI.Controls {
                 g.DrawImage(BackgroundImage, 0, 0);
 
 
-            Pen pen = new Pen(new SolidBrush(ForeColor), _thickness);
+            var pen = new Pen(new SolidBrush(ForeColor), _thickness);
 
             int radius = this.Width / 2 - _margin;
 
 
-            Point pCentre = new Point(this.Width / 2, this.Height / 2-4);
+            var pCentre = new Point(this.Width / 2, this.Height / 2-4);
             int angle = SweepAngle * Percent /100;
             int a = SweepAngle - angle;
 
             int anlgeStart = (360 - SweepAngle) / 2;
 
-            Point pPointer = new();
+            Point pPointer;
             if(MarkerStyle == MarkerStyleEnum.Line)
                 pPointer = new Point((int)(pCentre.X +  radius * Math.Sin((anlgeStart + a) * Math.PI / 180)), (int)(pCentre.Y + radius * Math.Cos((anlgeStart + a) * Math.PI / 180)));
             else
@@ -353,8 +353,8 @@ namespace UI.Controls {
                     for (int i = 0; i <= Divisions; i++) {
                         int x = SweepAngle / Divisions * i;
 
-                        Point p1 = new Point((int)(pCentre.X + (radius + 5) * Math.Sin((x + anlgeStart) * Math.PI / 180)), (int)(pCentre.Y + (radius + 5) * Math.Cos((x + anlgeStart) * Math.PI / 180)));
-                        Point p2 = new Point((int)(pCentre.X + (radius + 9) * Math.Sin((x + anlgeStart) * Math.PI / 180)), (int)(pCentre.Y + (radius + 9) * Math.Cos((x + anlgeStart) * Math.PI / 180)));
+                        var p1 = new Point((int)(pCentre.X + (radius + 5) * Math.Sin((x + anlgeStart) * Math.PI / 180)), (int)(pCentre.Y + (radius + 5) * Math.Cos((x + anlgeStart) * Math.PI / 180)));
+                        var p2 = new Point((int)(pCentre.X + (radius + 9) * Math.Sin((x + anlgeStart) * Math.PI / 180)), (int)(pCentre.Y + (radius + 9) * Math.Cos((x + anlgeStart) * Math.PI / 180)));
                         g.DrawLine(new Pen(new SolidBrush(ForeColor), 1), p1, p2);
 
                     }

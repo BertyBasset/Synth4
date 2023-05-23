@@ -14,7 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Synth.Keyboard\Synth.Keyboard.csproj" />
-    <ProjectReference Include="..\SynthEngine\Synth.Modules.csproj" />
+    <ProjectReference Include="..\Synth.Modules\Synth.Modules.csproj" />
+    <ProjectReference Include="..\Synth.Patch\Synth.Patch.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Patches\" />
   </ItemGroup>
 
 </Project>

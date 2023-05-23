@@ -77,12 +77,12 @@ namespace Synth.Modules.Effects {
             set {
                 _EffectType = value;
                 switch (_EffectType) {
-                    case EffectType.None: _Effect = new NullEffect(); break;
-                    case EffectType.Chorus: _Effect = new Chorus() ; break;
-                    case EffectType.Reverb: _Effect = new Reverb() ; break;
-                    case EffectType.AllPass: _Effect = new AllPassFilter() ; break;
-                    case EffectType.FeedbackComb: _Effect = new FeedbackCombFilter() ; break;
-                    case EffectType.FeedForwardComb: _Effect = new FeedForwardCombFilter();  break;
+                    case EffectType.None: _Effect = new NullEffect() { Source = Source }; break;
+                    case EffectType.Chorus: _Effect = new Chorus() { Source = Source, Frequency = Param1, MaxDelay=Param2 }; break;
+                    case EffectType.Reverb: _Effect = new Reverb() { Source = Source, Gain = Param1, DelayLength = Param2 }; break;
+                    case EffectType.AllPass: _Effect = new AllPassFilter() { Source = Source, Gain = Param1, DelayLength = Param2 }; break;
+                    case EffectType.FeedbackComb: _Effect = new FeedbackCombFilter() { Source = Source, Gain = Param1, DelayLength = Param2 }; break;
+                    case EffectType.FeedForwardComb: _Effect = new FeedForwardCombFilter() { Source = Source, Gain = Param1, DelayLength = Param2 };  break;
                     default: break;
                 }
                 _Effect.Source = Source;

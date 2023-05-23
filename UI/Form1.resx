@@ -58,7 +58,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="kOsc1Freq.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco1Freq.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKDQwPEVAhVxoAAASoSURBVHhe5ZotTBxBGIaRyEokEolEIpFIJBKJ
@@ -84,7 +84,7 @@
         Fdel4rpUXJeK61JxXSquS8V1qbgukZntX8KcsfH//OIGAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc1Octave.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco1Octave.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKCg4GLTDffAMAAAHySURBVHhe7dixTvJQAIZhEkYSiWFgZOACGBgY
@@ -99,7 +99,7 @@
         AAAASUVORK5CYII=
 </value>
   </data>
-  <data name="kOsc1PW.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco1PW.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKDQwPEVAhVxoAAASoSURBVHhe5ZotTBxBGIaRyEokEolEIpFIJBKJ
@@ -125,7 +125,7 @@
         Fdel4rpUXJeK61JxXSquS8V1qbgukZntX8KcsfH//OIGAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc1Waveform.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco1Waveform.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         vAAADrwBlbxySQAAAAd0SU1FB+YKCg02OIACEEIAAALwSURBVHhe5ZfPSxRhGMdXBEHRg+BBUBC8qfjj
@@ -144,7 +144,7 @@
         rojHewz16ZR8gkgxCgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="kOsc2Waveform.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco2Waveform.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         vAAADrwBlbxySQAAAAd0SU1FB+YKCg02OIACEEIAAALwSURBVHhe5ZfPSxRhGMdXBEHRg+BBUBC8qfjj
@@ -163,7 +163,7 @@
         rojHewz16ZR8gkgxCgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="kOsc2PW.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco2PW.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKDQwPEVAhVxoAAASoSURBVHhe5ZotTBxBGIaRyEokEolEIpFIJBKJ
@@ -189,7 +189,7 @@
         Fdel4rpUXJeK61JxXSquS8V1qbgukZntX8KcsfH//OIGAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc2Octave.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco2Octave.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKCg4HA/USQI0AAAHPSURBVHhe5dihTwJRAMfx24gEAoFI4A8gEAhE
@@ -203,7 +203,7 @@
         xXbFdsV2xXbFdsV2VOw+AMAKOvz+it7/AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc2Freq.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco2Freq.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKDQwPEVAhVxoAAASoSURBVHhe5ZotTBxBGIaRyEokEolEIpFIJBKJ
@@ -229,7 +229,7 @@
         Fdel4rpUXJeK61JxXSquS8V1qbgukZntX8KcsfH//OIGAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc3Waveform.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco3Waveform.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         vAAADrwBlbxySQAAAAd0SU1FB+YKCg02OIACEEIAAALwSURBVHhe5ZfPSxRhGMdXBEHRg+BBUBC8qfjj
@@ -248,7 +248,7 @@
         rojHewz16ZR8gkgxCgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="kOsc3PW.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco3PW.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKDQwPEVAhVxoAAASoSURBVHhe5ZotTBxBGIaRyEokEolEIpFIJBKJ
@@ -274,7 +274,7 @@
         Fdel4rpUXJeK61JxXSquS8V1qbgukZntX8KcsfH//OIGAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc3Octave.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco3Octave.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKCg4HA/USQI0AAAHPSURBVHhe5dihTwJRAMfx24gEAoFI4A8gEAhE
@@ -288,7 +288,7 @@
         xXbFdsV2xXbFdsV2VOw+AMAKOvz+it7/AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="kOsc3Freq.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="kVco3Freq.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE0AAABNCAIAAABsa37nAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         cgAADnIB6yf3TQAAAAd0SU1FB+YKDQwPEVAhVxoAAASoSURBVHhe5ZotTBxBGIaRyEokEolEIpFIJBKJ

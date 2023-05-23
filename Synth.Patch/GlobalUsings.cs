@@ -1,0 +1,9 @@
+﻿global using Synth.IO;
+global using Synth.Keyboard.Controllers;
+global using Synth.Keyboard;
+global using Synth.Modules.Effects;
+global using Synth.Modules.Modifiers.Filters;
+global using Synth.Modules.Modifiers;
+global using Synth.Modules.Modulators;
+global using Synth.Modules.Sources;
+global using Synth.Properties;

@@ -19,7 +19,7 @@ public class SynthEngine : WaveProvider32 {
 
 
     DateTime graphLastUpdated = DateTime.Now;
-    List<double> graphData = new List<double>();
+    List<double> graphData = new ();
 
 
 
@@ -27,10 +27,10 @@ public class SynthEngine : WaveProvider32 {
     public void Start() {
         SetWaveFormat(_SampleRate, _Channels);
 
-        waveOut = new();
-
-        waveOut.DesiredLatency = 100;
-        waveOut.NumberOfBuffers = 3;
+        waveOut = new() {
+            DesiredLatency = 100,
+            NumberOfBuffers = 3
+        };
 
         waveOut.Init(this);
         waveOut.Play();
