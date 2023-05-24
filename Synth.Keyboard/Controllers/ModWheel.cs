@@ -1,14 +1,14 @@
 ﻿namespace Synth.Keyboard.Controllers;
 
 public class ModWheel : iModule {
-    private Midi midi = Midi.Instance;
+    private readonly Midi midi = Midi.Instance;
 
     public ModWheel() {
         // ModWheel 0 - 127
         midi.ModWheelChanged += (o, e)
             => {
                 if (_midichannel == null || _midichannel == e.MidiChannel)
-                    Value = e.Value / 127f;
+                    Value = e.Value / 127f ;
             };
     }
 

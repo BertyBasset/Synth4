@@ -14,7 +14,7 @@ public class SynthEngine : WaveProvider32 {
 
     // These config settings are injected into constructor by client application
     internal static int _SampleRate;
-    int _Channels;
+    readonly int _Channels;
     #endregion
 
 

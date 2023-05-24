@@ -98,7 +98,7 @@ public partial class Led : UserControl {
     void DrawLed() {
         var g = this.CreateGraphics();
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-        Pen pen = new Pen(new SolidBrush(ForeColor), 1);
+        var pen = new Pen(new SolidBrush(ForeColor), 1);
 
         Color c = _ledcolor;
         if (LedState == Enums.LedState.Off) {

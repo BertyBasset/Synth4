@@ -22,7 +22,7 @@ public class LFO : iModule {
     #endregion
 
     #region Public Properties
-    private LFOWaveForm _Shape = new LFOWaveForm();
+    private LFOWaveForm _Shape = new ();
     public LFOWaveForm Shape {
         get { return _Shape; }
         set {
@@ -53,7 +53,7 @@ public class LFO : iModule {
     #endregion
 
     #region Private Properties
-    Random r = new();
+    readonly Random r = new();
     double oldPhase;
     #endregion
 
@@ -69,7 +69,7 @@ public class LFO : iModule {
         // Advance Phase Accumulator acording to timeIncrement and current frequency
         double delta = timeIncrement * Frequency * 360f;
         _Phase += delta;
-        _Phase = _Phase % 360;
+        _Phase %= 360;
 
 
         // Generate clock event - twice per cycle
@@ -86,7 +86,7 @@ public class LFO : iModule {
         }
 
 
-        double value = 0f;
+        double value;
 
         if (_Shape.Type == LFOWaveformType.SH) {
             // Only update S+H value once per phase cycle
@@ -132,16 +132,16 @@ public class LFO : iModule {
         set {
             _Keyboard = value;
 
-            _Keyboard.TriggerOn += _Keyboard_TriggerOn;
-            _Keyboard.TriggerOff += _Keyboard_TriggerOff;
+            _Keyboard.TriggerOn += Keyboard_TriggerOn;
+            _Keyboard.TriggerOff += Keyboard_TriggerOff;
         }
     }
 
-    private void _Keyboard_TriggerOff(object? sender, EventArgs e) {
+    private void Keyboard_TriggerOff(object? sender, EventArgs e) {
         _Gate = false;
     }
 
-    private void _Keyboard_TriggerOn(object? sender, EventArgs e) {
+    private void Keyboard_TriggerOn(object? sender, EventArgs e) {
         _Gate = true;
     }
     #endregion

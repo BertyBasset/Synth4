@@ -21,18 +21,16 @@ public class VCOWaveForm {
     internal iGenerator? _Generator;
     internal iGenerator Generator {
         get {
-            if (_Generator == null) {
-                switch (Type) {
-                    case VCOWaveformType.Sine: _Generator = new GeneratorSine(); break;
-                    case VCOWaveformType.Saw: _Generator = new GeneratorSaw(); break;
-                    case VCOWaveformType.Triangle: _Generator = new GeneratorTriangle(); break;
-                    case VCOWaveformType.Square: _Generator = new GeneratorSquare(); break;
-                    case VCOWaveformType.SuperSaw: _Generator = new GeneratorSuperSaw(); break;
-                    case VCOWaveformType.SawFalling: _Generator = new GeneratorSaw(); break;
+            _Generator ??= Type switch {
+                    VCOWaveformType.Sine => new GeneratorSine(),
+                    VCOWaveformType.Saw => new GeneratorSaw(),
+                    VCOWaveformType.Triangle => new GeneratorTriangle(),
+                    VCOWaveformType.Square => new GeneratorSquare(),
+                    VCOWaveformType.SuperSaw => new GeneratorSuperSaw(),
+                    VCOWaveformType.SawFalling => new GeneratorSaw(),
                     // No generator for Sample and Hold. LFO will take care of it.
-                    default: _Generator = new GeneratorSine(); break;
-                }
-            }
+                    _ => new GeneratorSine(),
+                };
 
             return _Generator;
         }
@@ -53,14 +51,14 @@ public class VCOWaveForm {
     }
 
     public static List<VCOWaveForm> GetWaveFormList() {
-        var waveforms = new List<VCOWaveForm>();
-
-        waveforms.Add(new VCOWaveForm() { ID = 0, Name = "Sine", Type = VCOWaveformType.Sine });
-        waveforms.Add(new VCOWaveForm() { ID = 1, Name = "Saw", Type = VCOWaveformType.Saw });
-        waveforms.Add(new VCOWaveForm() { ID = 2, Name = "Triangle", Type = VCOWaveformType.Triangle });
-        waveforms.Add(new VCOWaveForm() { ID = 3, Name = "Square", Type = VCOWaveformType.Square });
-        waveforms.Add(new VCOWaveForm() { ID = 4, Name = "SuperSaw", Type = VCOWaveformType.SuperSaw });
-        waveforms.Add(new VCOWaveForm() { ID = 5, Name = "SawFalling", Type = VCOWaveformType.Saw });
+        List<VCOWaveForm> waveforms = new() {
+            new VCOWaveForm() { ID = 0, Name = "Sine", Type = VCOWaveformType.Sine },
+            new VCOWaveForm() { ID = 1, Name = "Saw", Type = VCOWaveformType.Saw },
+            new VCOWaveForm() { ID = 2, Name = "Triangle", Type = VCOWaveformType.Triangle },
+            new VCOWaveForm() { ID = 3, Name = "Square", Type = VCOWaveformType.Square },
+            new VCOWaveForm() { ID = 4, Name = "SuperSaw", Type = VCOWaveformType.SuperSaw },
+            new VCOWaveForm() { ID = 5, Name = "SawFalling", Type = VCOWaveformType.Saw }
+        };
 
         return waveforms;
     }
@@ -88,29 +86,15 @@ public class LFOWaveForm {
     internal iGenerator? _Generator;
     internal iGenerator Generator {
         get {
-            if (_Generator == null) {
-                switch (Type) {
-                    case LFOWaveformType.Sine:
-                        _Generator = new GeneratorSine();
-                        break;
-                    case LFOWaveformType.Saw:
-                        _Generator = new GeneratorSaw();
-                        break;
-                    case LFOWaveformType.Triangle:
-                        _Generator = new GeneratorTriangle();
-                        break;
-                    case LFOWaveformType.Square:
-                        _Generator = new GeneratorSquare();
-                        break;
-                    case LFOWaveformType.SawFalling:
-                        _Generator = new GeneratorSaw();
-                        break;
+            _Generator ??= Type switch {
+                    LFOWaveformType.Sine => new GeneratorSine(),
+                    LFOWaveformType.Saw => new GeneratorSaw(),
+                    LFOWaveformType.Triangle => new GeneratorTriangle(),
+                    LFOWaveformType.Square => new GeneratorSquare(),
+                    LFOWaveformType.SawFalling => new GeneratorSaw(),
                     // No generator for Sample and Hold. LFO will take care of it.
-                    default:
-                        _Generator = new GeneratorSine();
-                        break;
-                }
-            }
+                    _ => new GeneratorSine(),
+                };
 
             return _Generator;
         }
@@ -131,14 +115,14 @@ public class LFOWaveForm {
     }
 
     public static List<LFOWaveForm> GetWaveFormList() {
-        var waveforms = new List<LFOWaveForm>();
-
-        waveforms.Add(new LFOWaveForm() { ID = 0, Name = "Sine", Type = LFOWaveformType.Sine });
-        waveforms.Add(new LFOWaveForm() { ID = 1, Name = "Saw", Type = LFOWaveformType.Saw });
-        waveforms.Add(new LFOWaveForm() { ID = 2, Name = "Saw-Falling", Type = LFOWaveformType.SawFalling });
-        waveforms.Add(new LFOWaveForm() { ID = 3, Name = "Triangle", Type = LFOWaveformType.Triangle });
-        waveforms.Add(new LFOWaveForm() { ID = 4, Name = "Square", Type = LFOWaveformType.Square });
-        waveforms.Add(new LFOWaveForm() { ID = 5, Name = "Sample and Hold", Type = LFOWaveformType.SH });
+        var waveforms = new List<LFOWaveForm> {
+            new LFOWaveForm() { ID = 0, Name = "Sine", Type = LFOWaveformType.Sine },
+            new LFOWaveForm() { ID = 1, Name = "Saw", Type = LFOWaveformType.Saw },
+            new LFOWaveForm() { ID = 2, Name = "Saw-Falling", Type = LFOWaveformType.SawFalling },
+            new LFOWaveForm() { ID = 3, Name = "Triangle", Type = LFOWaveformType.Triangle },
+            new LFOWaveForm() { ID = 4, Name = "Square", Type = LFOWaveformType.Square },
+            new LFOWaveForm() { ID = 5, Name = "Sample and Hold", Type = LFOWaveformType.SH }
+        };
 
         return waveforms;
     }

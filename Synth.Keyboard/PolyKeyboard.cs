@@ -5,15 +5,16 @@ namespace Synth.Keyboard;
 
 public class PolyKeyboard {
     public event EventHandler<EventArgs<string>>? DebugEvent;
+    public event EventHandler<EventArgs<(int, bool)>>? KeyChanged;          // Return tuple - key number, state
 
-    private Midi midi = Midi.Instance;
+    private readonly Midi midi = Midi.Instance;
     private int? _midichannel;
-    public List<key> keys;
+    public List<Key> keys;
 
     public PolyKeyboard(int NumVoices) {
-        keys = new List<key>(NumVoices);
+        keys = new List<Key>(NumVoices);
         for (int i = 0; i < NumVoices; i++) {
-            keys.Add(new key() { MonoKeyboard = new MonoKeyboard() { ID = i } });
+            keys.Add(new Key() { MonoKeyboard = new MonoKeyboard() { ID = i } });
         }
 
         midi.NoteChanged += Midi_NoteChanged;
@@ -37,7 +38,7 @@ public class PolyKeyboard {
         if (MidiChannel != e.MidiChannel && MidiChannel != null)                    // Midi Channel Filter
             return;
 
-        key? key;
+        Key? key;
 
         key = keys.Find(x => x.MonoKeyboard.Note.ID == e.Note.ID);                  // 1. Find if any keys is already set to this note
 
@@ -53,6 +54,17 @@ public class PolyKeyboard {
             key.MonoKeyboard.NoteState = e.State;
             key.MonoKeyboard.Note = Note.GetByID(e.Note.ID);
             key.TimeChanged = Timestamp();
+
+
+            // Raise event to notify client of key change
+            if (KeyChanged != null) {
+                for (int i = 0; i < keys.Count; i++) {
+                    if (keys[i] == key) {
+                        KeyChanged?.Invoke(this, new EventArgs<(int, bool)>((i, e.State == NoteState.On)));
+                        break;
+                    }
+                }
+            }
         }
 
         RaiseDebugEvent();
@@ -62,13 +74,13 @@ public class PolyKeyboard {
         // Raise a debug event to show what's going on
         if (DebugEvent != null) {
             // Dump string version of keys to be printed out by client
-            StringBuilder s = new StringBuilder();
+            StringBuilder s = new ();
             int i = 0;
             foreach (var k in keys) {
                 s.Append($"Keyboard {i.ToString()}, Note: {k.MonoKeyboard.Note.Desc.Replace("♯", "#").Replace("♭", "b"), -6}, State: {k.MonoKeyboard.NoteState.ToString(),-3}, TimeStamp: {k.TimeChanged.ToString()}\r\n");
                 i++;
             }
-            DebugEvent?.Invoke(this, new EventArgs<string>($"{s.ToString()}\r\n"));
+            DebugEvent?.Invoke(this, new EventArgs<string>($"{s}\r\n"));
         }
     }
 
@@ -81,8 +93,8 @@ public class PolyKeyboard {
     #endregion
 }
 
-public class key {
+public class Key {
     //private Note Note;
-    public MonoKeyboard MonoKeyboard = new MonoKeyboard();
+    public MonoKeyboard MonoKeyboard = new ();
     internal long TimeChanged = 0;      // Use this as a low cost time stamp where lower value is older, save expense of time/date type
 }

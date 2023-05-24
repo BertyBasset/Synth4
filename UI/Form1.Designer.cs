@@ -76,7 +76,7 @@
             this.lblMidiChannel = (new global::System.Windows.Forms.Label());
             this.label2 = (new global::System.Windows.Forms.Label());
             this.cboMidiChannel = (new global::System.Windows.Forms.ComboBox());
-            this.ledGate = (new global::UI.Controls.Led());
+            this.ledGate1 = (new global::UI.Controls.Led());
             this.ledLfo1 = (new global::UI.Controls.Led());
             this.ledLfo2 = (new global::UI.Controls.Led());
             this.cmdControllers = (new global::System.Windows.Forms.Button());
@@ -190,6 +190,10 @@
             this.label57 = (new global::System.Windows.Forms.Label());
             this.label58 = (new global::System.Windows.Forms.Label());
             this.label59 = (new global::System.Windows.Forms.Label());
+            this.ledGate2 = (new global::UI.Controls.Led());
+            this.ledGate3 = (new global::UI.Controls.Led());
+            this.ledGate4 = (new global::UI.Controls.Led());
+            this.ledGate5 = (new global::UI.Controls.Led());
             ((global::System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -1349,11 +1353,11 @@
             // 
             this.label2.AutoSize = (true);
             this.label2.ForeColor = (global::System.Drawing.Color.White);
-            this.label2.Location = (new global::System.Drawing.Point(428, 376));
+            this.label2.Location = (new global::System.Drawing.Point(444, 381));
             this.label2.Name = ("label2");
-            this.label2.Size = (new global::System.Drawing.Size(34, 15));
+            this.label2.Size = (new global::System.Drawing.Size(65, 15));
             this.label2.TabIndex = (54);
-            this.label2.Text = ("GATE");
+            this.label2.Text = ("POLY GATE");
             // 
             // cboMidiChannel
             // 
@@ -1369,18 +1373,18 @@
             this.cboMidiChannel.Size = (new global::System.Drawing.Size(59, 24));
             this.cboMidiChannel.TabIndex = (55);
             // 
-            // ledGate
+            // ledGate1
             // 
-            this.ledGate.Clickable = (false);
-            this.ledGate.ID = ("");
-            this.ledGate.LedColor = (global::System.Drawing.Color.Lime);
-            this.ledGate.LedShape = (global::UI.Controls.Led.Shape.Round);
-            this.ledGate.LedState = (global::UI.Controls.Led.Enums.LedState.Off);
-            this.ledGate.Location = (new global::System.Drawing.Point(463, 376));
-            this.ledGate.Name = ("ledGate");
-            this.ledGate.Size = (new global::System.Drawing.Size(15, 15));
-            this.ledGate.TabIndex = (56);
-            this.ledGate.ToolTip = (null);
+            this.ledGate1.Clickable = (false);
+            this.ledGate1.ID = ("");
+            this.ledGate1.LedColor = (global::System.Drawing.Color.Lime);
+            this.ledGate1.LedShape = (global::UI.Controls.Led.Shape.Round);
+            this.ledGate1.LedState = (global::UI.Controls.Led.Enums.LedState.Off);
+            this.ledGate1.Location = (new global::System.Drawing.Point(433, 397));
+            this.ledGate1.Name = ("ledGate1");
+            this.ledGate1.Size = (new global::System.Drawing.Size(15, 15));
+            this.ledGate1.TabIndex = (56);
+            this.ledGate1.ToolTip = (null);
             // 
             // ledLfo1
             // 
@@ -1839,7 +1843,7 @@
             this.kVca2._v = (0D);
             this.kVca2.BackColor = (global::System.Drawing.Color.Navy);
             this.kVca2.Default = (1D);
-            this.kVca2.Description = ("VCF Resonance");
+            this.kVca2.Description = ("VCA2 Amount");
             this.kVca2.Divisions = (10);
             this.kVca2.ForeColor = (global::System.Drawing.Color.White);
             this.kVca2.HideLabels = (true);
@@ -1876,7 +1880,7 @@
             this.kVca3._v = (0D);
             this.kVca3.BackColor = (global::System.Drawing.Color.Navy);
             this.kVca3.Default = (1D);
-            this.kVca3.Description = ("VCF Resonance");
+            this.kVca3.Description = ("VCA3 Amount");
             this.kVca3.Divisions = (10);
             this.kVca3.ForeColor = (global::System.Drawing.Color.White);
             this.kVca3.HideLabels = (true);
@@ -1913,7 +1917,7 @@
             this.kVca4._v = (0D);
             this.kVca4.BackColor = (global::System.Drawing.Color.Navy);
             this.kVca4.Default = (1D);
-            this.kVca4.Description = ("VCF Resonance");
+            this.kVca4.Description = ("VCA4 Amount");
             this.kVca4.Divisions = (10);
             this.kVca4.ForeColor = (global::System.Drawing.Color.White);
             this.kVca4.HideLabels = (true);
@@ -2214,7 +2218,7 @@
             this.kVca5._v = (0D);
             this.kVca5.BackColor = (global::System.Drawing.Color.Navy);
             this.kVca5.Default = (1D);
-            this.kVca5.Description = ("VCF Resonance");
+            this.kVca5.Description = ("VCA5 Amount");
             this.kVca5.Divisions = (10);
             this.kVca5.ForeColor = (global::System.Drawing.Color.White);
             this.kVca5.HideLabels = (true);
@@ -2802,12 +2806,68 @@
             this.label59.TabIndex = (171);
             this.label59.Text = ("VCA2 - c");
             // 
+            // ledGate2
+            // 
+            this.ledGate2.Clickable = (false);
+            this.ledGate2.ID = ("");
+            this.ledGate2.LedColor = (global::System.Drawing.Color.Lime);
+            this.ledGate2.LedShape = (global::UI.Controls.Led.Shape.Round);
+            this.ledGate2.LedState = (global::UI.Controls.Led.Enums.LedState.Off);
+            this.ledGate2.Location = (new global::System.Drawing.Point(451, 397));
+            this.ledGate2.Name = ("ledGate2");
+            this.ledGate2.Size = (new global::System.Drawing.Size(15, 15));
+            this.ledGate2.TabIndex = (175);
+            this.ledGate2.ToolTip = (null);
+            // 
+            // ledGate3
+            // 
+            this.ledGate3.Clickable = (false);
+            this.ledGate3.ID = ("");
+            this.ledGate3.LedColor = (global::System.Drawing.Color.Lime);
+            this.ledGate3.LedShape = (global::UI.Controls.Led.Shape.Round);
+            this.ledGate3.LedState = (global::UI.Controls.Led.Enums.LedState.Off);
+            this.ledGate3.Location = (new global::System.Drawing.Point(468, 397));
+            this.ledGate3.Name = ("ledGate3");
+            this.ledGate3.Size = (new global::System.Drawing.Size(15, 15));
+            this.ledGate3.TabIndex = (176);
+            this.ledGate3.ToolTip = (null);
+            // 
+            // ledGate4
+            // 
+            this.ledGate4.Clickable = (false);
+            this.ledGate4.ID = ("");
+            this.ledGate4.LedColor = (global::System.Drawing.Color.Lime);
+            this.ledGate4.LedShape = (global::UI.Controls.Led.Shape.Round);
+            this.ledGate4.LedState = (global::UI.Controls.Led.Enums.LedState.Off);
+            this.ledGate4.Location = (new global::System.Drawing.Point(486, 397));
+            this.ledGate4.Name = ("ledGate4");
+            this.ledGate4.Size = (new global::System.Drawing.Size(15, 15));
+            this.ledGate4.TabIndex = (177);
+            this.ledGate4.ToolTip = (null);
+            // 
+            // ledGate5
+            // 
+            this.ledGate5.Clickable = (false);
+            this.ledGate5.ID = ("");
+            this.ledGate5.LedColor = (global::System.Drawing.Color.Lime);
+            this.ledGate5.LedShape = (global::UI.Controls.Led.Shape.Round);
+            this.ledGate5.LedState = (global::UI.Controls.Led.Enums.LedState.Off);
+            this.ledGate5.Location = (new global::System.Drawing.Point(504, 397));
+            this.ledGate5.Name = ("ledGate5");
+            this.ledGate5.Size = (new global::System.Drawing.Size(15, 15));
+            this.ledGate5.TabIndex = (178);
+            this.ledGate5.ToolTip = (null);
+            // 
             // frmMidiController
             // 
             this.AutoScaleDimensions = (new global::System.Drawing.SizeF(7F, 15F));
             this.AutoScaleMode = (global::System.Windows.Forms.AutoScaleMode.Font);
             this.BackColor = (global::System.Drawing.Color.Navy);
             this.ClientSize = (new global::System.Drawing.Size(1175, 558));
+            this.Controls.Add(this.ledGate5);
+            this.Controls.Add(this.ledGate4);
+            this.Controls.Add(this.ledGate3);
+            this.Controls.Add(this.ledGate2);
             this.Controls.Add(this.label56);
             this.Controls.Add(this.label57);
             this.Controls.Add(this.label58);
@@ -2921,7 +2981,7 @@
             this.Controls.Add(this.cmdControllers);
             this.Controls.Add(this.ledLfo2);
             this.Controls.Add(this.ledLfo1);
-            this.Controls.Add(this.ledGate);
+            this.Controls.Add(this.ledGate1);
             this.Controls.Add(this.cboMidiChannel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblMidiChannel);
@@ -3035,7 +3095,7 @@
         private Label lblMidiChannel;
         private Label label2;
         private ComboBox cboMidiChannel;
-        private Controls.Led ledGate;
+        private Controls.Led ledGate1;
         private Controls.Led ledLfo1;
         private Controls.Led ledLfo2;
         private Button cmdControllers;
@@ -3149,5 +3209,9 @@
         private Label label57;
         private Label label58;
         private Label label59;
+        private global::UI.Controls.Led ledGate2;
+        private global::UI.Controls.Led ledGate3;
+        private global::UI.Controls.Led ledGate4;
+        private global::UI.Controls.Led ledGate5;
     }
 }

@@ -46,7 +46,7 @@ public class MonoKeyboard : iModule {
     public int ID;
     public double Glide { get; set; } = 0;
 
-    private Note _Note = new Note();
+    private Note _Note = new ();
     internal Note Note {
         get { return _Note; }
         set {

@@ -17,21 +17,19 @@ using static Synth.Enums;
 /*
 // 1
 Hoopkup Midi Controllers
-Mod Wheel => VCF Env
-Num Voices Selector
-Gate for x Voices
-LFO flash
-Save Patch
-Load Patch
-View Wave
-Repeat - either Note or Chord - controlled by Lfo1
+mc will have to raise event to Form1, then will have to adjust the value of the mapped knob
+
+
+
+// 2 WPF ?????
+
 
 */
 // 3 Modulation Matrix System - maybe have a bank of VCAs to modulate modulators?
 
 
 public partial class frmMidiController : Form {
-    Synth.Patch patch = new();
+    readonly Synth.Patch patch = new();
 
 
     bool formLoaded = false;
@@ -53,12 +51,14 @@ public partial class frmMidiController : Form {
 
     #region Patches
     private void InitPatch() {
-        
-        if(!Persist.Exists("_autosave.json"))
+
+        if (!Persist.Exists("_autosave.json"))
             this.Controls.OfType<Knob>().ToList().ForEach(knob => knob.Value = knob.Value);
         else {
             LoadPatch("_autosave.json");
         }
+
+        cboMidiChannel.SelectedIndex = 0;
     }
 
     private void LoadPatch(string FileName) {
@@ -67,7 +67,7 @@ public partial class frmMidiController : Form {
     }
 
 
-    private void SaveCurrentPatch() { 
+    private void SaveCurrentPatch() {
         var knobSerialisers = this.Controls.OfType<Knob>()
             .Select(knob => new KnobSerialiser { Name = knob.Name, Value = knob.Value })
             .ToList();
@@ -87,11 +87,19 @@ public partial class frmMidiController : Form {
     private void InitEventHandlers() {
         this.Activated += (o, e) => { formLoaded = true; FilterTypeChanged(); EffectTypeChanged(); };
         this.FormClosing += (o, e) => SaveCurrentPatch();
-
         cmdInit.Click += (o, e) => LoadPatch("_init");
         cboMidiChannel.SelectedIndexChanged += (o, e) => patch.MidiChannel = cboMidiChannel.Text == "All" || cboMidiChannel.Text == "" ? null : int.Parse(cboMidiChannel.Text);
 
+
+
         cmdViewWave.Click += (o, e) => { frmWaveViewer viewer = new(patch.SynthEngine); viewer.Show(); };
+        cmdControllers.Click += (o, e) => {
+            var frm = new frmControlMapping {
+                form = this
+            };
+            frm.ShowDialog();
+        };
+
 
 
 
@@ -155,6 +163,35 @@ public partial class frmMidiController : Form {
         kEffectParam2.ValueChanged += (o, e) => patch.EffectParam2 = kEffectParam2.Value;
         kEffectMix.ValueChanged += (o, e) => patch.EffectMix = kEffectMix.Value;
 
+        kLfo1Rate.ValueChanged += (o, e) => patch.Lfo1_Frequency = kLfo1Rate.Value;
+        kLfo1Shape.ValueChanged += (o, e) => patch.Lfo1_WaveformType = (LFOWaveformType)kLfo1Shape.IntValue;
+        kLfo2Rate.ValueChanged += (o, e) => patch.Lfo2_Frequency = kLfo2Rate.Value;
+        kLfo2Shape.ValueChanged += (o, e) => patch.Lfo2_WaveformType = (LFOWaveformType)kLfo2Shape.IntValue;
+
+        patch.Lfo1Click += (o, e) => ledLfo1.LedState = e ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+        patch.Lfo2Click += (o, e) => ledLfo2.LedState = e ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+        patch.KeyChanged += (o, e) => {
+            switch (e.Value.Item1) {
+                case 0:
+                    ledGate1.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+                    break;
+                case 1:
+                    ledGate2.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+                    break;
+                case 2:
+                    ledGate3.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+                    break;
+                case 3:
+                    ledGate4.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+                    break;
+                case 4:
+                    ledGate5.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+                    break;
+                default:
+                    break;
+            }
+
+        };
     }
 
 
@@ -242,7 +279,6 @@ public partial class frmMidiController : Form {
 
 
         #endregion
-
 
 
 

@@ -134,7 +134,7 @@ public partial class frmControlMapping : Form {
             KnobInfo[] copy = new KnobInfo[availableKnobs.Count];
             availableKnobs.CopyTo(copy);
 
-            cboKnob[i].DataSource = copy.ToList();
+            cboKnob[i].DataSource = copy.ToList().OrderBy(k => k.Description).ToList();
             cmdDelete[i].Click += (o, e) => Delete((Button)(o??(new Button())));
         }
        
