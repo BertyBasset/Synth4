@@ -3,19 +3,13 @@ using System.Diagnostics;
 
 namespace UI;
 public partial class frmWaveViewer : Form {
-    private Synth.SynthEngine? _synthEngine;
-
-    Font fMarkers;
-    Brush bMarkers;
+    readonly Font fMarkers;
+    readonly Brush bMarkers;
     public frmWaveViewer(Synth.SynthEngine SynthEngine) {
         fMarkers = new Font("Arial", 8);
         bMarkers = new SolidBrush(Color.Cyan);
 
-
         try {
-            Debug.Assert(SynthEngine != null);
-            _synthEngine = SynthEngine;
-
             InitializeComponent();
 
             SynthEngine.GraphUpdated += (o, e) => {
@@ -25,8 +19,8 @@ public partial class frmWaveViewer : Form {
     }
 
     private void Draw(List<double> e) {
-        Bitmap b = new Bitmap(this.Width, this.Height);
-        Graphics g = Graphics.FromImage(b);
+        var b = new Bitmap(this.Width, this.Height);
+        var g = Graphics.FromImage(b);
 
         if(chkWave.Checked)
             DrawGraph(g, e);
@@ -77,20 +71,18 @@ public partial class frmWaveViewer : Form {
                 continue;
 
             var label = $"{(freq < 1000 ? freq : ((int)(freq / 100)) / 10.0)}{(freq < 1000 ? "Hz" : "kHz")}";
-            StringFormat sf = new StringFormat();
-            sf.LineAlignment = StringAlignment.Center;
-            sf.Alignment = StringAlignment.Center;
+            StringFormat sf = new() {
+                LineAlignment = StringAlignment.Center,
+                Alignment = StringAlignment.Center
+            };
             g.DrawString(label, fMarkers, bMarkers, (float)i, (float)8, sf);
             
-            
             g.DrawLine(p, i, 15, i, 20);
-
             freq += 500;
         }
-
     }
 
-    private double[] GetSpectrum(double[] signal) {
+    private static double[] GetSpectrum(double[] signal) {
         // Must be power of 2 samples
         var extract = signal[0..512];
         // Uses nuget package from https://github.com/swharden/FftSharp
@@ -105,6 +97,4 @@ public partial class frmWaveViewer : Form {
         double[] fftMag = FftSharp.Transform.FFTmagnitude(extract);
         return fftMag;
     }
-
 }
-

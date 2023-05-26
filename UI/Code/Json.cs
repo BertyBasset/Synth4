@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace UI.Code {
     public class  Json<T> where T : new()  {
 
-        static string saveFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)??"";
+        static readonly string saveFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)??"";
 
         public static void SaveFile(string FileName, T obj) {
             var s = JsonSerializer.Serialize<T>(obj);

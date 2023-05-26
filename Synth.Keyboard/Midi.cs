@@ -5,7 +5,7 @@ namespace Synth.Keyboard;
 
 public enum NoteState { Off, On }
 public class Midi {
-    private MidiIn? MidiIn;
+    private readonly MidiIn? MidiIn;
 
     internal event EventHandler<NoteChangedEventArgs>? NoteChanged;
     public event EventHandler<MidiWheelEventArgs>? PitchWheelChanged;
@@ -14,7 +14,7 @@ public class Midi {
 
     // Convert to singleton so everything can share midi
     private static readonly Lazy<Midi> lazy =
-        new Lazy<Midi>(() => new Midi());
+        new(() => new Midi());
 
     public static Midi Instance { get { return lazy.Value; } }
 

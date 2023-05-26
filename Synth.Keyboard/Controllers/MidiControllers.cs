@@ -3,7 +3,7 @@
 public class MidiControllers : iModule {
     public event EventHandler<MidiControllerEventArgs>? ControllerValueChanged;
 
-    private Midi midi = Midi.Instance;
+    private readonly Midi midi = Midi.Instance;
 
     public MidiControllers() {
         // MidiControllers 0 - 127

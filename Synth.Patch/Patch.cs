@@ -1,21 +1,16 @@
-﻿using System.Reflection;
-using System.Security.AccessControl;
-using System.Security.Cryptography.X509Certificates;
-
-namespace Synth;
-
-
-// ****** CRUSHER & MOD WHEEL TO CONNECT
-
+﻿namespace Synth;
 
 public class Patch {
+    #region Events
     public event EventHandler<bool>? Lfo1Click;
     public event EventHandler<bool>? Lfo2Click;
     public event EventHandler<EventArgs<(int, bool)>>? KeyChanged;          // Return tuple - key number, state
 
-    public int a;
+    public event EventHandler<MidiWheelEventArgs>? ModWheelChanged;
+    public event EventHandler<MidiControllerEventArgs>? MidiControllerChanged;
+    #endregion
 
-    #region Intiallise 1 - Declare all modules
+    #region Module Declaration
     readonly Synth.SynthEngine engine = new ();
     const int NUM_VOICES = 5;
     readonly PolyKeyboard polyKbd = new(NUM_VOICES);
@@ -29,23 +24,19 @@ public class Patch {
     readonly List<Mixer> vcoMixer = Enumerable.Range(0, NUM_VOICES).Select(i => new Mixer()).ToList();
     readonly List<BitCrusher> crusher=Enumerable.Range(0, NUM_VOICES).Select(i => new BitCrusher()).ToList();
     readonly List<EnvGen> envVcf = Enumerable.Range(0, NUM_VOICES).Select(i => new EnvGen() ).ToList();
-    readonly List<VCA> vcaModWh = Enumerable.Range(0, NUM_VOICES).Select(i => new VCA()).ToList();
     readonly List<VCF> vcf = Enumerable.Range(0, NUM_VOICES).Select(i => new VCF() ).ToList();
     readonly List<EnvGen> envVca = Enumerable.Range(0, NUM_VOICES).Select(i => new EnvGen() ).ToList();
     readonly List<VCA> vca = Enumerable.Range(0, NUM_VOICES).Select(i => new VCA()).ToList();
     readonly List<AudioOut> voiceOut = Enumerable.Range(0, NUM_VOICES).Select(i => new AudioOut()).ToList();
-    
-    
 
 
     // Synth Level Modules
-    readonly ModWheel mw = new ();
+    readonly MidiControllers mc = new();
     readonly Mixer voiceMixer = new ();
     readonly Effects effects = new () { EffectType = Enums.EffectType.FeedbackComb, Mix = -.7, Param1 = .6, Param2 = .6 };
     readonly AudioOut audioOut = new();
     readonly LFO lfo1 = new ();          // Lfos are module level because we want same waveform for all voices
     readonly LFO lfo2 = new();
-
     #endregion
 
     #region Initiallse 2 - Patch modules together and add them either to a separate voice, or to the Synth Engine
@@ -58,6 +49,7 @@ public class Patch {
         lfo1.ClockTick += (o, e) => Lfo1Click?.Invoke(o, e);
         lfo2.ClockTick += (o, e) => Lfo2Click?.Invoke(o, e);
         polyKbd.KeyChanged += (o, e) => KeyChanged?.Invoke(this, e);
+        mc.ControllerValueChanged += (o, e) => MidiControllerChanged?.Invoke(this, e);
 
         // Patch Voice level modules together
         for (int i = 0; i < NUM_VOICES; i++) {
@@ -69,7 +61,6 @@ public class Patch {
             voices[i].Modules.Add(noise[i]);
             voices[i].Modules.Add(vcoMixer[i]);
             voices[i].Modules.Add(crusher[i]);
-            voices[i].Modules.Add(vcaModWh[i]);
             voices[i].Modules.Add(envVcf[i]);
             voices[i].Modules.Add(vcf[i]);
             voices[i].Modules.Add(envVca[i]);
@@ -94,12 +85,7 @@ public class Patch {
             vcoMixer[i].Levels[2] = 1;
             crusher[i].Source = vcoMixer[i];
             envVcf[i].Keyboard = polyKbd.keys[i].MonoKeyboard;
-
-            // Modulate vcf env amount with mod wheel
-            vcaModWh[i].Source = envVcf[i];
-            vcaModWh[i].Modulator = mw;
-
-            vcf[i].Modulator = vcaModWh[i];
+            vcf[i].Modulator = envVcf[i];
             vcf[i].Source = crusher[i];
             envVca[i].Keyboard = polyKbd.keys[i].MonoKeyboard;
             vca[i].Source = vcf[i];
@@ -113,7 +99,7 @@ public class Patch {
         effects.Source = voiceMixer;
         audioOut.Source = effects;
 
-        engine.Modules.Add(mw);
+        engine.Modules.Add(mc);
         engine.Modules.Add(voiceMixer);
         engine.Modules.Add(effects);
         engine.Modules.Add(audioOut);
@@ -174,6 +160,7 @@ public class Patch {
         get => vco3.FirstOrDefault().WaveFormType;
     }
     #endregion
+
     #region Oscillator/Noise Mixer
     private enum MixerSource { 
         Vco1,
@@ -198,8 +185,6 @@ public class Patch {
         set => vcoMixer.ForEach(mixer => mixer.Levels[(int)MixerSource.Noise] = value);
         get => vcoMixer.FirstOrDefault().Levels[(int)MixerSource.Noise];
     }
-
-
     #endregion
 
     #region BitCrush + Glide
@@ -239,7 +224,6 @@ public class Patch {
     public double VcfRippleFactor {
         set => vcf.ForEach(vcf => vcf.RippleFactor = value);
         get => vcf.FirstOrDefault().RippleFactor;
-
     }
 
     public double VcfResonance {
@@ -273,7 +257,6 @@ public class Patch {
         get => envVcf.FirstOrDefault().Release;
     }
     #endregion
-
 
     #region VCA + VCA Env
     public double VcaEnvAttack {
@@ -321,7 +304,7 @@ public class Patch {
     }
 
     public int? MidiChannel {
-        set { polyKbd.MidiChannel = value; mw.MidiChannel = value; }
+        set { polyKbd.MidiChannel = value; }
         get => polyKbd.MidiChannel;
     }
 

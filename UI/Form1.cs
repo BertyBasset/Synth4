@@ -1,53 +1,39 @@
 namespace UI;
 using Synth;
 using Synth.Keyboard;
-using Synth.Modules.Effects;
-using Synth.Modules.Modifiers.Filters;
-using Synth.Modules.Modulators;
 using Synth.Properties;
-using System.Security;
-using System.Xml.Linq;
 using UI.Code;
 using UI.Controls;
 using static Synth.Enums;
 
 
 // Version 4
-
-/*
-// 1
-Hoopkup Midi Controllers
-mc will have to raise event to Form1, then will have to adjust the value of the mapped knob
-
-
-
-// 2 WPF ?????
-
-
-*/
-// 3 Modulation Matrix System - maybe have a bank of VCAs to modulate modulators?
+// 1 WPF ?????
+// 2 Modulation System - Matrix ?
 
 
 public partial class frmMidiController : Form {
+    #region Private Objects
+    readonly List<Led> leds;
     readonly Synth.Patch patch = new();
-
-
+    List<ControlKnobMap> _controlMapping;
     bool formLoaded = false;
+    #endregion
+
     #region Initiallise
     public frmMidiController() {
         InitializeComponent();
-
         InitEventHandlers();
-
-
         InitPatch();
+        InitKnobGroups();
+
+        // This contains controller id to knob name mapping
+        _controlMapping = Json<List<ControlKnobMap>>.Load(Constants.MIDI_TO_KNOB_MAPPING_FILE);
+
+        leds = new() { ledVCO1, ledVCO2, ledVCO3, ledMixer, ledBitCrush, ledEnv1, ledEnv2, ledEnv3, ledEnv4, ledLFO, ledVCF, ledVcas, ledEffects };
+
     }
-
-
-
-
     #endregion
-
 
     #region Patches
     private void InitPatch() {
@@ -66,21 +52,17 @@ public partial class frmMidiController : Form {
         this.Controls.OfType<Knob>().ToList().ForEach(knob => knob.Value = knobSerialisers.First(k => k.Name == knob.Name).Value);
     }
 
-
     private void SaveCurrentPatch() {
         var knobSerialisers = this.Controls.OfType<Knob>()
             .Select(knob => new KnobSerialiser { Name = knob.Name, Value = knob.Value })
             .ToList();
         Persist.Save(knobSerialisers, "_autosave.json");
-
     }
 
     public class KnobSerialiser {
         public string Name { get; set; } = "";
         public double Value { get; set; }
     }
-
-
     #endregion
 
     #region Event Handlers
@@ -89,25 +71,35 @@ public partial class frmMidiController : Form {
         this.FormClosing += (o, e) => SaveCurrentPatch();
         cmdInit.Click += (o, e) => LoadPatch("_init");
         cboMidiChannel.SelectedIndexChanged += (o, e) => patch.MidiChannel = cboMidiChannel.Text == "All" || cboMidiChannel.Text == "" ? null : int.Parse(cboMidiChannel.Text);
-
-
-
+        patch.MidiControllerChanged += Patch_MidiControllerChanged;
         cmdViewWave.Click += (o, e) => { frmWaveViewer viewer = new(patch.SynthEngine); viewer.Show(); };
+        
+        // Module Group selector switches/leds
+        ledVCO1.Click += (o, e) => GroupLedClicked(o);
+        ledVCO2.Click += (o, e) => GroupLedClicked(o);
+        ledVCO3.Click += (o, e) => GroupLedClicked(o);
+        ledMixer.Click += (o, e) => GroupLedClicked(o);
+        ledBitCrush.Click += (o, e) => GroupLedClicked(o);
+        ledEnv1.Click += (o, e) => GroupLedClicked(o);
+        ledEnv2.Click += (o, e) => GroupLedClicked(o);
+        ledEnv3.Click += (o, e) => GroupLedClicked(o);
+        ledEnv4.Click += (o, e) => GroupLedClicked(o);
+        ledLFO.Click += (o, e) => GroupLedClicked(o);
+        ledVCF.Click += (o, e) => GroupLedClicked(o);
+        ledVcas.Click += (o, e) => GroupLedClicked(o);
+        ledEffects.Click += (o, e) => GroupLedClicked(o);
+
         cmdControllers.Click += (o, e) => {
             var frm = new frmControlMapping {
                 form = this
             };
             frm.ShowDialog();
+            _controlMapping = Json<List<ControlKnobMap>>.Load(Constants.MIDI_TO_KNOB_MAPPING_FILE);
         };
 
-
-
-
         // Modules
-
         kVco1Freq.ValueChanged += (o, e) => patch.Vco1_FineTune = kVco1Freq.Value;
         kVco1Octave.ValueChanged += (o, e) => patch.Vco1_Octave = kVco1Octave.IntValue;
-
 
         kVco1Waveform.ValueChanged += (o, e) => patch.Vco1_WaveFormType = (VCOWaveformType)kVco1Waveform.IntValue;
         kVco1PW.ValueChanged += (o, e) => patch.Vco1_PulseWidth = kVco1PW.Value;
@@ -150,12 +142,10 @@ public partial class frmMidiController : Form {
         kEnv1Sustain.ValueChanged += (o, e) => patch.VcfEnvSustain = kEnv1Sustain.Value;
         kEnv1Release.ValueChanged += (o, e) => patch.VcfEnvRelease = kEnv1Release.Value;
 
-
         kEnv2Attack.ValueChanged += (o, e) => patch.VcaEnvAttack = kEnv2Attack.Value;
         kEnv2Decay.ValueChanged += (o, e) => patch.VcaEnvDecay = kEnv2Decay.Value;
         kEnv2Sustain.ValueChanged += (o, e) => patch.VcaEnvSustain = kEnv2Sustain.Value;
         kEnv2Release.ValueChanged += (o, e) => patch.VcaEnvRelease = kEnv2Release.Value;
-
 
         kEffectType.ValueChanged += (o, e) => patch.EffectType = (EffectType)kEffectType.IntValue;
         kEffectType.ValueChanged += (o, e) => EffectTypeChanged();
@@ -190,10 +180,42 @@ public partial class frmMidiController : Form {
                 default:
                     break;
             }
-
         };
     }
+    #endregion
 
+    #region Midi Controller Event Handler
+    private void Patch_MidiControllerChanged(object? sender, MidiControllerEventArgs e) {
+        // Are we in group mode?
+        string? controlName = null;
+
+        // Normal mode, use control mapping spec to hookup controller to knob
+        if (controlGroup == null)
+            controlName = _controlMapping.FirstOrDefault(i => i.ControllerID == e.ControllerID)?.KnobName;
+        else {
+            int? index = null;
+            for(int i = 0; i < 4; i++) {
+                if (_controlMapping[i].ControllerID == e.ControllerID) {
+                    index = i;
+                    break;
+                }   
+            }
+
+            if (index == null)
+                return;
+
+            // We need dict Dict<controlGroup, List<string>>    where <string> is nob name
+            // we can then do dict[controlGroup][index] to get the knob name
+            var group = knobGroups[(ControlGroup)controlGroup];
+            controlName = group[(int)index];
+        }
+
+        if (controlName == null)
+            return;
+
+        var knob = (Knob)(Controls.Find(controlName, false)[0]);
+        knob.Value = (double)e.Value/127.0 * (knob.Max - knob.Min) + knob.Min;
+    }
 
     private void FilterTypeChanged() {
         if (!formLoaded)
@@ -274,15 +296,79 @@ public partial class frmMidiController : Form {
             default:
                 break;
         }
-        //effects.Param1 = kEffectParam1.Value;
-        //effects.Param2 = kEffectParam2.Value;
-
-
-        #endregion
-
-
-
+    
 
     }
+    #endregion
+
+    #region Control Groups
+    enum ControlGroup {
+        ledVCO1,
+        ledVCO2,
+        ledVCO3,
+        ledMixer,
+        ledBitCrush,
+        ledEnv1,
+        ledEnv2,
+        ledEnv3,
+        ledEnv4,
+        ledLFO,
+        ledVCF,
+        ledVcas,
+        ledEffects
+    }
+
+    private readonly Dictionary<ControlGroup, List<string>> knobGroups = new();
+
+    void InitKnobGroups() { 
+        knobGroups.Add(ControlGroup.ledVCO1, new List<string>() { "kVco1Freq", "kVco1Octave", "kVco1Waveform", "kVco1PW" });
+        knobGroups.Add(ControlGroup.ledVCO2, new List<string>() { "kVco2Freq", "kVco2Octave", "kVco2Waveform", "kVco2PW" });
+        knobGroups.Add(ControlGroup.ledVCO3, new List<string>() { "kVco3Freq", "kVco3Octave", "kVco3Waveform", "kVco3PW" });
+        knobGroups.Add(ControlGroup.ledLFO, new List<string>() { "kLfo1Rate", "kLfo1Shape", "kLfo2Rate", "kLfo2Shape" });
+        knobGroups.Add(ControlGroup.ledMixer, new List<string>() { "kOsc1Mix", "kOsc2Mix", "kOsc3Mix", "kNoiseMix" });
+        knobGroups.Add(ControlGroup.ledBitCrush, new List<string>() { "kBitCrushSampleRate", "kBitCrushResolution", "kGlide", "kGlide" });
+        knobGroups.Add(ControlGroup.ledVCF, new List<string>() { "kVcfType", "kVcfCutoff", "kVcfResonance", "kVcfEnvelope" });
+        knobGroups.Add(ControlGroup.ledEnv1, new List<string>() { "kEnv1Attack", "kEnv1Decay", "kEnv1Sustain", "kEnv1Release" });
+        knobGroups.Add(ControlGroup.ledEnv2, new List<string>() { "kEnv2Attack", "kEnv2Decay", "kEnv2Sustain", "kEnv2Release" });
+        knobGroups.Add(ControlGroup.ledEnv3, new List<string>() { "kEnv3Attack", "kEnv3Decay", "kEnv3Sustain", "kEnv3Release" });
+        knobGroups.Add(ControlGroup.ledEnv4, new List<string>() { "kEnv4Attack", "kEnv4Decay", "kEnv4Sustain", "kEnv4Release" });
+        knobGroups.Add(ControlGroup.ledEffects, new List<string>() { "kEffectType", "kEffectParam1", "kEffectParam2", "kEffectMix" });
+        knobGroups.Add(ControlGroup.ledVcas, new List<string>() { "kVca2", "kVca3", "kVca4", "kVca5" });
+    }
+
+
+    ControlGroup? controlGroup = null;
+
+    private void GroupLedClicked(object? o) {
+        if (o == null)
+            return;
+
+        Led led = (Led)o;
+
+        if (led.LedState == Led.Enums.LedState.Off) {
+            controlGroup = null;
+            return;
+        }
+
+        leds.Where(l => l.Name != led.Name).ToList().ForEach(l => { l.LedState = Led.Enums.LedState.Off; });
+
+        controlGroup = led switch {
+            Led l when ReferenceEquals(l, ledBitCrush) => (ControlGroup?)ControlGroup.ledBitCrush,
+            Led l when ReferenceEquals(l, ledVCO1) => (ControlGroup?)ControlGroup.ledVCO1,
+            Led l when ReferenceEquals(l, ledVCO2) => (ControlGroup?)ControlGroup.ledVCO2,
+            Led l when ReferenceEquals(l, ledVCO3) => (ControlGroup?)ControlGroup.ledVCO3,
+            Led l when ReferenceEquals(l, ledMixer) => (ControlGroup?)ControlGroup.ledMixer,
+            Led l when ReferenceEquals(l, ledEnv1) => (ControlGroup?)ControlGroup.ledEnv1,
+            Led l when ReferenceEquals(l, ledEnv2) => (ControlGroup?)ControlGroup.ledEnv2,
+            Led l when ReferenceEquals(l, ledEnv3) => (ControlGroup?)ControlGroup.ledEnv3,
+            Led l when ReferenceEquals(l, ledEnv4) => (ControlGroup?)ControlGroup.ledEnv4,
+            Led l when ReferenceEquals(l, ledLFO) => (ControlGroup?)ControlGroup.ledLFO,
+            Led l when ReferenceEquals(l, ledVCF) => (ControlGroup?)ControlGroup.ledVCF,
+            Led l when ReferenceEquals(l, ledVcas) => (ControlGroup?)ControlGroup.ledVcas,
+            Led l when ReferenceEquals(l, ledEffects) => (ControlGroup?)ControlGroup.ledEffects,
+            _ => null,
+        };
+    }
+    #endregion
 }
 

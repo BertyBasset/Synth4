@@ -2,7 +2,7 @@
 
 namespace Synth.Keyboard.Controllers;
 
-internal class ModKnob : iModule {
+internal class __delet_ModKnob : iModule {
     double iModule.Value => throw new NotImplementedException();
 
     void iModule.Tick(double TimeIncrement) {

@@ -3,12 +3,16 @@
 public class ModWheel : iModule {
     private readonly Midi midi = Midi.Instance;
 
+    public event EventHandler<MidiWheelEventArgs>? ModWheelChanged;
+
     public ModWheel() {
         // ModWheel 0 - 127
         midi.ModWheelChanged += (o, e)
             => {
-                if (_midichannel == null || _midichannel == e.MidiChannel)
-                    Value = e.Value / 127f ;
+                if (_midichannel == null || _midichannel == e.MidiChannel) { 
+                    Value = e.Value / 127f;
+                    ModWheelChanged?.Invoke(this, e);
+                }
             };
     }
 

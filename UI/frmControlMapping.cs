@@ -40,9 +40,9 @@ public partial class frmControlMapping : Form {
 
     #region InitControls
     // Put controls into dictionaries so we can treat them as arrays
-    Dictionary<int, ComboBox> cboMidi = new();
-    Dictionary<int, ComboBox> cboKnob = new();
-    Dictionary<int, Button> cmdDelete = new();
+    readonly Dictionary<int, ComboBox> cboMidi = new();
+    readonly Dictionary<int, ComboBox> cboKnob = new();
+    readonly Dictionary<int, Button> cmdDelete = new();
 
     void InitControls() {
         InitDictionaries();
@@ -145,7 +145,7 @@ public partial class frmControlMapping : Form {
 
     #region Event Handlers
     void Delete(Button btn) {
-        int index = int.Parse(btn.Name.Substring(btn.Name.Length - 1));
+        int index = int.Parse(btn.Name[^1..]);
             
         if (NumRows > 1) {
             NumRows--;
@@ -177,7 +177,7 @@ public partial class frmControlMapping : Form {
     #endregion
 
     #region Load/Save
-    private List<ControlKnobMap> LoadMapping() {
+    private static List<ControlKnobMap> LoadMapping() {
         return Json<List<ControlKnobMap>>.Load(Constants.MIDI_TO_KNOB_MAPPING_FILE);
     }
 
