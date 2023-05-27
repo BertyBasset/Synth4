@@ -1,10 +1,6 @@
 ﻿using Synth.Modules;
 using Synth.IO;
 
-
-
-// ************** We want to add a Mono Keyboard property to each voice, then each module in the voic will be connected to that keyboard
-
 namespace Synth;
 public class Voice : iModule {
     public List<iModule> Modules = new();
@@ -23,5 +19,3 @@ public class Voice : iModule {
     }
     #endregion
 }
-
-

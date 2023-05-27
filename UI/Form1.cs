@@ -191,7 +191,6 @@ public partial class frmMidiController : Form {
         string? controlName = null;
         int? index = null;
 
-
         if (controlGroup != null) {
             // Get Knob from control group
             for (int i = 0; i < 4; i++) {
@@ -222,40 +221,31 @@ public partial class frmMidiController : Form {
         if (!formLoaded)
             return;
 
-        switch (kVcfType.Value) {
-            case (int)Enums.FilterType.RC:
-                lblFilterType.Invoke((MethodInvoker)(() => lblFilterType.Text = "Low Pass RC 1 pole"));
-                kVcfResonance.Invoke((MethodInvoker)(() => kVcfResonance.LabelText = "n/a"));
-                break;
-            case (int)Enums.FilterType.Butterworth:
-                lblFilterType.Invoke((MethodInvoker)(() => lblFilterType.Text = "Low Pass Butterworth 2 pole"));
-                kVcfResonance.Invoke((MethodInvoker)(() => kVcfResonance.LabelText = "RESONANCE"));
-                patch.VcfResonance = kVcfResonance.Value;
-                break;
-            case (int)Enums.FilterType.Chebyshev:
-                lblFilterType.Invoke((MethodInvoker)(() => lblFilterType.Text = "Low Pass Chebyshev 2 pole"));
-                kVcfResonance.Invoke((MethodInvoker)(() => kVcfResonance.LabelText = "RIPPLE"));
-                patch.VcfRippleFactor = kVcfResonance.Value;
-                break;
-            case (int)Enums.FilterType.Bessel:
-                lblFilterType.Invoke((MethodInvoker)(() => lblFilterType.Text = "Low Pass Bessel 2 pole"));
-                kVcfResonance.Invoke((MethodInvoker)(() => kVcfResonance.LabelText = "n/a"));
-                break;
-            case (int)Enums.FilterType.BandPass:
-                lblFilterType.Invoke((MethodInvoker)(() => lblFilterType.Text = "Band Pass"));
-                kVcfResonance.Invoke((MethodInvoker)(() => kVcfResonance.LabelText = "BANDWIDTH"));
-                patch.VcfBandwidth = kVcfResonance.Value;
-                break;
-            case (int)Enums.FilterType.Notch:
-                lblFilterType.Invoke((MethodInvoker)(() => lblFilterType.Text = "Notch Pass"));
-                kVcfResonance.Invoke((MethodInvoker)(() => kVcfResonance.LabelText = "BANDWIDTH"));
-                patch.VcfBandwidth = kVcfResonance.Value;
+        string filterTypeText = string.Empty;
+        string resonanceLabelText = string.Empty;
+        double resonanceValue = 0.0;
 
+        switch (kVcfType.Value) {
+            case (int)Enums.FilterType.RC: 
+                filterTypeText = "Low Pass RC 1 pole"; resonanceLabelText = "n/a"; break;
+            case (int)Enums.FilterType.Butterworth: 
+                filterTypeText = "Low Pass Butterworth 2 pole"; resonanceLabelText = "RESONANCE"; resonanceValue = kVcfResonance.Value; break;
+            case (int)Enums.FilterType.Chebyshev: 
+                filterTypeText = "Low Pass Chebyshev 2 pole"; resonanceLabelText = "RIPPLE"; resonanceValue = kVcfResonance.Value; break;
+            case (int)Enums.FilterType.Bessel: 
+                filterTypeText = "Low Pass Bessel 2 pole"; resonanceLabelText = "n/a"; break;
+            case (int)Enums.FilterType.BandPass: 
+                filterTypeText = "Band Pass"; resonanceLabelText = "BANDWIDTH"; resonanceValue = kVcfResonance.Value; break;
+            case (int)Enums.FilterType.Notch:
                 // Ideally need attenuation as well
-                break;
-            default:
-                break;
+                filterTypeText = "Notch Pass"; resonanceLabelText = "BANDWIDTH"; resonanceValue = kVcfResonance.Value; break;
+            default: break;
         }
+
+        this.BeginInvoke((MethodInvoker)(() => lblFilterType.Text = filterTypeText));
+        this.BeginInvoke((MethodInvoker)(() => kVcfResonance.LabelText = resonanceLabelText));
+
+        patch.VcfResonance = resonanceValue;
         patch.VcfEnvelopeAmount = kVcfEnvelope.Value;
     }
 
@@ -263,42 +253,30 @@ public partial class frmMidiController : Form {
         if (!formLoaded)
             return;
 
+        string effectTypeText = string.Empty;
+        string param1LabelText = string.Empty;
+        string param2LabelText = string.Empty;
+
         switch (kEffectType.Value) {
             case (int)EffectType.None:
-                lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = "None"));
-                kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = "n/a"));
-                kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = "n/a"));
-                break;
+                effectTypeText = "None"; param1LabelText = "n/a"; param2LabelText = "n/a"; break;
             case (int)EffectType.Chorus:
-                lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = "Chorus"));
-                kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = "FREQUENCY"));
-                kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = "DELAY"));
-                break;
+                effectTypeText = "Chorus"; param1LabelText = "FREQUENCY"; param2LabelText = "DELAY"; break;
             case (int)EffectType.Reverb:
-                lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = "Reverb"));
-                kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = "GAIN"));
-                kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = "DELAY LENGTH"));
-                break;
+                effectTypeText = "Reverb"; param1LabelText = "GAIN"; param2LabelText = "DELAY LENGTH"; break;
             case (int)EffectType.AllPass:
-                lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = "All Pass Filter"));
-                kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = "GAIN"));
-                kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = "DELAY LENGTH"));
-                break;
+                effectTypeText = "All Pass Filter"; param1LabelText = "GAIN"; param2LabelText = "DELAY LENGTH"; break;
             case (int)EffectType.FeedbackComb:
-                lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = "Feedback Comb Filter"));
-                kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = "GAIN"));
-                kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = "DELAY LENGTH"));
-                break;
+                effectTypeText = "Feedback Comb Filter"; param1LabelText = "GAIN"; param2LabelText = "DELAY LENGTH"; break;
             case (int)EffectType.FeedForwardComb:
-                lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = "Feed Forward Comb Filter"));
-                kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = "GAIN"));
-                kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = "DELAY LENGTH"));
-                break;
+                effectTypeText = "Feed Forward Comb Filter"; param1LabelText = "GAIN"; param2LabelText = "DELAY LENGTH"; break;
             default:
                 break;
         }
-    
 
+        lblEffectType.Invoke((MethodInvoker)(() => lblEffectType.Text = effectTypeText));
+        kEffectParam1.Invoke((MethodInvoker)(() => kEffectParam1.LabelText = param1LabelText));
+        kEffectParam2.Invoke((MethodInvoker)(() => kEffectParam2.LabelText = param2LabelText));
     }
     #endregion
 

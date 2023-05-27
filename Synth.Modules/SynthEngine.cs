@@ -1,27 +1,22 @@
-﻿using NAudio.Wave;
-using Synth.IO;
-using Synth.Modules;
+﻿using Synth.IO;
 
 namespace Synth;
 public class SynthEngine : WaveProvider32 {
+
+    #region Private Properties and Events
     const int UPDATE_GRAPH_EVERY_X_MILLISECONDS = 100;
     public event EventHandler<List<double>>? GraphUpdated;
 
-
-    #region Private Properties
     //private DirectSoundOut? waveOut;
     private NAudio.Wave.WaveOut? waveOut;
 
     // These config settings are injected into constructor by client application
     internal static int _SampleRate;
     readonly int _Channels;
-    #endregion
-
 
     DateTime graphLastUpdated = DateTime.Now;
     List<double> graphData = new ();
-
-
+    #endregion
 
     #region Stop/Start
     public void Start() {
@@ -35,8 +30,6 @@ public class SynthEngine : WaveProvider32 {
         waveOut.Init(this);
         waveOut.Play();
     }
-
-
     #endregion
 
     #region Public Synth Properties

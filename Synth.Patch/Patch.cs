@@ -1,4 +1,6 @@
-﻿namespace Synth;
+﻿using Synth.Core;
+
+namespace Synth;
 
 public class Patch {
     #region Events
@@ -6,7 +8,7 @@ public class Patch {
     public event EventHandler<bool>? Lfo2Click;
     public event EventHandler<EventArgs<(int, bool)>>? KeyChanged;          // Return tuple - key number, state
 
-    public event EventHandler<MidiWheelEventArgs>? ModWheelChanged;
+    
     public event EventHandler<MidiControllerEventArgs>? MidiControllerChanged;
     #endregion
 
@@ -53,20 +55,25 @@ public class Patch {
 
         // Patch Voice level modules together
         for (int i = 0; i < NUM_VOICES; i++) {
-            // Put modules for voice into a voice
-            voices[i].Modules.Add(polyKbd.keys[i].MonoKeyboard);    // Remeber to add keyboard to voice as well as it also implements Tick to provide Glide
-            voices[i].Modules.Add(vco1[i]);
-            voices[i].Modules.Add(vco2[i]);
-            voices[i].Modules.Add(vco3[i]);
-            voices[i].Modules.Add(noise[i]);
-            voices[i].Modules.Add(vcoMixer[i]);
-            voices[i].Modules.Add(crusher[i]);
-            voices[i].Modules.Add(envVcf[i]);
-            voices[i].Modules.Add(vcf[i]);
-            voices[i].Modules.Add(envVca[i]);
-            voices[i].Modules.Add(vca[i]);
-            voices[i].Modules.Add(voiceOut[i]);
-            engine.Modules.Add(voices[i]);
+            var voice = new Voice();
+            voices.Add(voice);
+
+            voice.Modules.AddRange(new iModule[] {
+                polyKbd.keys[i].MonoKeyboard,
+                vco1[i],
+                vco2[i],
+                vco3[i],
+                noise[i],
+                vcoMixer[i],
+                crusher[i],
+                envVcf[i],
+                vcf[i],
+                envVca[i],
+                vca[i],
+                voiceOut[i]
+            });
+
+            engine.Modules.Add(voice);
 
             // Hook modules together - Source and Modulator to iModules
             vco1[i].Frequency.Keyboard = polyKbd.keys[i].MonoKeyboard;
@@ -105,7 +112,6 @@ public class Patch {
         engine.Modules.Add(audioOut);
         engine.Modules.Add(lfo1);
         engine.Modules.Add(lfo2);
-
     }
     #endregion
 

@@ -15,7 +15,7 @@ public abstract class WaveProvider32 : IWaveProvider {
     }
 
     public int Read(byte[] buffer, int offset, int count) {
-        WaveBuffer waveBuffer = new WaveBuffer(buffer);
+        var waveBuffer = new WaveBuffer(buffer);
         int samplesRequired = count / 4;
         int samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
         return samplesRead * 4;
