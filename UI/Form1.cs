@@ -8,6 +8,7 @@ using static Synth.Enums;
 
 
 // Version 4
+// Mod Wheel of in Knob Group Mode
 // 1 WPF ?????
 // 2 Modulation System - Matrix ?
 
@@ -188,33 +189,33 @@ public partial class frmMidiController : Form {
     private void Patch_MidiControllerChanged(object? sender, MidiControllerEventArgs e) {
         // Are we in group mode?
         string? controlName = null;
+        int? index = null;
 
-        // Normal mode, use control mapping spec to hookup controller to knob
-        if (controlGroup == null)
-            controlName = _controlMapping.FirstOrDefault(i => i.ControllerID == e.ControllerID)?.KnobName;
-        else {
-            int? index = null;
-            for(int i = 0; i < 4; i++) {
+
+        if (controlGroup != null) {
+            // Get Knob from control group
+            for (int i = 0; i < 4; i++) {
                 if (_controlMapping[i].ControllerID == e.ControllerID) {
                     index = i;
                     break;
-                }   
+                }
             }
 
-            if (index == null)
-                return;
-
-            // We need dict Dict<controlGroup, List<string>>    where <string> is nob name
-            // we can then do dict[controlGroup][index] to get the knob name
-            var group = knobGroups[(ControlGroup)controlGroup];
-            controlName = group[(int)index];
+            if (index != null) {
+                var group = knobGroups[(ControlGroup)controlGroup];
+                controlName = group[(int)index];
+            }
         }
 
-        if (controlName == null)
-            return;
+        // If not in group mode, get knob from mapping  (but get controller 5 up from mapping in any case as we've only got max 4 kobs in a group)
+        if (index == null) {
+            controlName = _controlMapping.FirstOrDefault(i => i.ControllerID == e.ControllerID)?.KnobName;
+            if (controlName == null)
+                return;
+        }
 
         var knob = (Knob)(Controls.Find(controlName, false)[0]);
-        knob.Value = (double)e.Value/127.0 * (knob.Max - knob.Min) + knob.Min;
+        knob.Value = (double)e.Value / 127.0 * (knob.Max - knob.Min) + knob.Min;
     }
 
     private void FilterTypeChanged() {
