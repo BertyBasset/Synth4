@@ -4,8 +4,8 @@ namespace Synth;
 
 public class Patch {
     #region Events
-    public event EventHandler<bool>? Lfo1Click;
-    public event EventHandler<bool>? Lfo2Click;
+    public event EventHandler<bool>? Lfo1StateChanged;
+    public event EventHandler<bool>? Lfo2StateChanged;
     public event EventHandler<EventArgs<(int, bool)>>? KeyChanged;          // Return tuple - key number, state
 
     
@@ -48,8 +48,8 @@ public class Patch {
 
     void Init() {
         polyKbd.DebugEvent += (o, e) => System.Console.WriteLine(e.Value);
-        lfo1.ClockTick += (o, e) => Lfo1Click?.Invoke(o, e);
-        lfo2.ClockTick += (o, e) => Lfo2Click?.Invoke(o, e);
+        lfo1.ClockTick += (o, e) => Lfo1StateChanged?.Invoke(o, e);
+        lfo2.ClockTick += (o, e) => Lfo2StateChanged?.Invoke(o, e);
         polyKbd.KeyChanged += (o, e) => KeyChanged?.Invoke(this, e);
         mc.ControllerValueChanged += (o, e) => MidiControllerChanged?.Invoke(this, e);
 

@@ -159,28 +159,17 @@ public partial class frmMidiController : Form {
         kLfo2Rate.ValueChanged += (o, e) => patch.Lfo2_Frequency = kLfo2Rate.Value;
         kLfo2Shape.ValueChanged += (o, e) => patch.Lfo2_WaveformType = (LFOWaveformType)kLfo2Shape.IntValue;
 
-        patch.Lfo1Click += (o, e) => ledLfo1.LedState = e ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
-        patch.Lfo2Click += (o, e) => ledLfo2.LedState = e ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+        patch.Lfo1StateChanged += (o, e) => ledLfo1.LedState = e ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
+        patch.Lfo2StateChanged += (o, e) => ledLfo2.LedState = e ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
         patch.KeyChanged += (o, e) => {
-            switch (e.Value.Item1) {
-                case 0:
-                    ledGate1.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
-                    break;
-                case 1:
-                    ledGate2.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
-                    break;
-                case 2:
-                    ledGate3.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
-                    break;
-                case 3:
-                    ledGate4.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
-                    break;
-                case 4:
-                    ledGate5.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off;
-                    break;
-                default:
-                    break;
-            }
+            _ = e.Value.Item1 switch {
+                0 => ledGate1.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off,
+                1 => ledGate2.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off,
+                2 => ledGate3.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off,
+                3 => ledGate4.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off,
+                4 => ledGate5.LedState = e.Value.Item2 ? Led.Enums.LedState.On : Led.Enums.LedState.Off,
+                _ => throw new InvalidOperationException("Invalid value for e.Value.Item1.")
+            };
         };
     }
     #endregion

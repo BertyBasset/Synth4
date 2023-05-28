@@ -2,6 +2,8 @@
 using Synth.IO;
 
 namespace Synth;
+
+// Voice is simply a collection of modules. When Tick is applied to Voice, it applies Tick to all modules in the collection
 public class Voice : iModule {
     public List<iModule> Modules = new();
 
